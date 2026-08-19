@@ -1,4 +1,5 @@
 # app/models.py
+from pydantic import Field
 from sqlalchemy import Column, Integer, Numeric, String, DateTime, func
 from database import Base
 
@@ -8,8 +9,9 @@ class Advertisement(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String(50), nullable=False)
-    description = Column(String)
+    description = Column(String(500), nullable=False)
     price = Column(Numeric)
+    author = Column(String(50), nullable=False)
     create_date = Column(DateTime(timezone=True), server_default=func.now())
 
     def to_dict(self):

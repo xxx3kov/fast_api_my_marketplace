@@ -1,16 +1,18 @@
 # app/schemas.py
 
 
+from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CreateAdvertisementRequest(BaseModel):
-    title: str
-    description: Optional[str] = None
-    price: Decimal
+    title: str = Field(min_length=1, max_length=50)
+    description: str = Field(min_length=1, max_length=500)
+    author: str = Field(min_length=1, max_length=50)
+    price: Decimal = Field(gt=0)
 
 
 class CreateAdvertisementResponse(BaseModel):
@@ -20,23 +22,24 @@ class CreateAdvertisementResponse(BaseModel):
 class GetAdvertisementResponse(BaseModel):
     id: int
     title: str
-    description: Optional[str] = None
+    description: str
     price: Decimal
-    create_date: Optional[str] = None
+    author: str
+    create_date: datetime
 
 
 class UpdateAdvertisementRequest(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[Decimal] = None
+    title: Optional[str] = Field(default=None, min_length=1, max_length=50)
+    description: Optional[str] = Field(default=None, min_length=1, max_length=500)
+    price: Optional[Decimal] = Field(default=None, gt=0)
 
 
 class UpdateAdvertisementResponse(BaseModel):
     id: int
     title: str
-    description: Optional[str] = None
+    description: str
     price: Decimal
-    create_date: Optional[str] = None
+    create_date: str
 
 
 class OKResponse(BaseModel):
